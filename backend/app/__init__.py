@@ -1,11 +1,11 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
-from backend.app.extensions import db
+from app.extensions import db
 
-from backend.app.routes.auth import auth_bp
-from backend.app.routes.protected import protected_bp
-from backend.app.routes.fraud import fraud_bp
+from app.routes.auth import auth_bp
+from app.routes.protected import protected_bp
+from app.routes.fraud import fraud_bp
 
 
 def create_app():
