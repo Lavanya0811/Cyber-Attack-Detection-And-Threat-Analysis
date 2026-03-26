@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import API from "../services/api";
 
 import { Box, Card, CardContent, Typography, TextField, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -12,18 +12,22 @@ function Login() {
 
   const handleLogin = async () => {
     try {
-      const res = await axios.post("http://127.0.0.1:5000/auth/login", {
-        email,
-        password,
-      });
+      const res = await API.post(
+        "https://cyber-attack-detection-and-threat-fnth.onrender.com/auth/login",
+        {
+          email,
+          password,
+        },
+      );
 
       // store token
-      localStorage.setItem("token", res.data.access_token);
+      localStorage.setItem("token", res.data.token);
 
       // go to dashboard
       navigate("/dashboard");
     } catch (err) {
-      setError("Invalid credentials");
+      console.log("ERROR:", err.response || err.message);
+      setError(err.response?.data?.error || "Something went wrong");
     }
   };
 
