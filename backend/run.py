@@ -1,5 +1,5 @@
 import os
-from app.main import create_app
+from backend.app.main import create_app
 
 app = create_app()
 
