@@ -306,7 +306,13 @@ function Dashboard() {
 
   return (
     <Box
-      sx={{ background: "#0f172a", minHeight: "100vh", p: 4, maxWidth: "1400px", margin: "0 auto" }}
+      sx={{
+        background: "#0f172a",
+        minHeight: "100vh",
+        p: 4,
+        margin: "0 auto",
+        width: "100%",
+      }}
     >
       {/* HEADER */}
       <Typography variant="h4" sx={{ color: "#38bdf8", mb: 1 }}>
@@ -317,15 +323,15 @@ function Dashboard() {
         System learned {learningStats} fraud patterns
       </Typography>
 
-      <Grid container spacing={4}>
-        {/* ================= ROW 1 ================= */}
-        <Grid item xs={12} sm={12} md={6} lg={4}>
-          <Card sx={{ background: "#1e293b", borderRadius: 3 }}>
+      {/* ================= ROW 1 ================= */}
+      <Grid container spacing={3} sx={{ mb: 3, alignItems: "stretch" }}>
+        <Grid item xs={12} sm={6} lg={6}>
+          <Card sx={{ background: "#1e293b", borderRadius: 3, height: "360" }}>
             <CardContent>
               <Typography color="white" variant="h6" mb={2}>
                 Text Detection
               </Typography>
-              {/* 🔁 PASTE YOUR EXISTING TEXT MODULE CONTENT HERE */}
+
               <TextField
                 fullWidth
                 value={text}
@@ -391,8 +397,8 @@ function Dashboard() {
           </Card>
         </Grid>
 
-        <Grid item xs={12} sm={12} md={6} lg={4}>
-          <Card sx={{ background: "#1e293b", borderRadius: 3 }}>
+        <Grid item xs={12} sm={6} lg={6}>
+          <Card sx={{ background: "#1e293b", borderRadius: 3, height: "360" }}>
             <CardContent>
               <Typography color="white" variant="h6" mb={2}>
                 URL Detection
@@ -447,10 +453,12 @@ function Dashboard() {
             </CardContent>
           </Card>
         </Grid>
+      </Grid>
 
-        {/* ================= ROW 2 ================= */}
-        <Grid item xs={12} sm={12} md={6} lg={4}>
-          <Card sx={{ background: "#1e293b", borderRadius: 3 }}>
+      {/* ================= ROW 2 ================= */}
+      <Grid container spacing={3} sx={{ mb: 3, alignItems: "stretch" }}>
+        <Grid item xs={12} sm={6} lg={6}>
+          <Card sx={{ background: "#1e293b", borderRadius: 3, height: "360" }}>
             <CardContent>
               <Typography color="white" variant="h6" mb={2}>
                 Phone Detection
@@ -501,8 +509,8 @@ function Dashboard() {
           </Card>
         </Grid>
 
-        <Grid item xs={12} sm={12} md={6} lg={4}>
-          <Card sx={{ background: "#1e293b", borderRadius: 3 }}>
+        <Grid item xs={12} sm={6} lg={6}>
+          <Card sx={{ background: "#1e293b", borderRadius: 3, height: "360" }}>
             <CardContent>
               <Typography color="white" variant="h6" mb={2}>
                 Voice Detection
@@ -568,11 +576,13 @@ function Dashboard() {
             </CardContent>
           </Card>
         </Grid>
+      </Grid>
 
-        {/* ================= LIVE FRAUD ================= */}
-        {liveAlerts.length > 0 && (
+      {/* ================= LIVE FRAUD ================= */}
+      {liveAlerts.length > 0 && (
+        <Grid container spacing={3} sx={{ mb: 3, alignItems: "stretch", width: "100%" }}>
           <Grid item xs={12}>
-            <Card sx={{ background: "#7f1d1d", borderRadius: 3 }}>
+            <Card sx={{ background: "#7f1d1d", borderRadius: 3, width: "100%", minHeight: 140 }}>
               <CardContent>
                 <Typography color="white" variant="h6" mb={2}>
                   🚨 Live Fraud Monitoring
@@ -586,10 +596,12 @@ function Dashboard() {
               </CardContent>
             </Card>
           </Grid>
-        )}
+        </Grid>
+      )}
 
-        {/* ================= GRAPH BLOCK ================= */}
-        <Grid item xs={12}>
+      {/* ================= GRAPH BLOCK ================= */}
+      <Grid container spacing={3} sx={{ mb: 3, alignItems: "stretch", width: "100%" }}>
+        <Grid item xs={12} md={5}>
           <Card sx={{ background: "#1e293b", borderRadius: 3, p: 3 }}>
             <Typography color="white" variant="h6" mb={3}>
               Fraud Trend Analysis
@@ -606,13 +618,22 @@ function Dashboard() {
         </Grid>
 
         {/* ================= RECENT ACTIVITY BLOCK ================= */}
-        <Grid item xs={12}>
-          <Card sx={{ background: "#1e293b", borderRadius: 3, p: 3 }}>
+        <Grid item xs={12} md={7}>
+          <Card
+            sx={{
+              background: "#1e293b",
+              borderRadius: 3,
+              p: 3,
+              height: "100%",
+              maxHeight: 300,
+              overflow: "hidden",
+            }}
+          >
             <Typography color="white" variant="h6" mb={3}>
               Recent Activity
             </Typography>
 
-            <Box sx={{ maxHeight: 350, overflow: "auto" }}>
+            <Box sx={{ maxHeight: 500, overflow: "auto" }}>
               {history.map((h, i) => (
                 <Box
                   key={i}
