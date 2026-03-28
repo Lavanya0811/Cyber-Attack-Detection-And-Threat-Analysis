@@ -98,7 +98,9 @@ function Dashboard() {
 
   const loadHistory = async () => {
     try {
-      const res = await axios.get("http://127.0.0.1:5000/fraud/history");
+      const res = await axios.get(
+        "https://cyber-attack-detection-and-threat-fnth.onrender.com/fraud/history",
+      );
       setHistory(res.data);
     } catch {
       console.log("History error");
@@ -106,7 +108,9 @@ function Dashboard() {
   };
   const loadLiveAlerts = async () => {
     try {
-      const res = await axios.get("http://127.0.0.1:5000/fraud/alerts");
+      const res = await axios.get(
+        "https://cyber-attack-detection-and-threat-fnth.onrender.com/fraud/alerts",
+      );
       setLiveAlerts(res.data);
 
       if (res.data.length > 0) {
@@ -118,16 +122,22 @@ function Dashboard() {
     } catch {}
   };
   const loadLearning = async () => {
-    const res = await axios.get("http://127.0.0.1:5000/fraud/learning-stats");
+    const res = await axios.get(
+      "https://cyber-attack-detection-and-threat-fnth.onrender.com/fraud/learning-stats",
+    );
     setLearningStats(res.data.patterns_learned);
   };
   const loadTrend = async () => {
-    const res = await axios.get("http://127.0.0.1:5000/fraud/trend");
+    const res = await axios.get(
+      "https://cyber-attack-detection-and-threat-fnth.onrender.com/fraud/trend",
+    );
     setTrendData(res.data);
   };
 
   const loadRiskDistribution = async () => {
-    const res = await axios.get("http://127.0.0.1:5000/fraud/risk-distribution");
+    const res = await axios.get(
+      "https://cyber-attack-detection-and-threat-fnth.onrender.com/fraud/risk-distribution",
+    );
     setRiskDistribution(res.data);
   };
 
@@ -137,7 +147,10 @@ function Dashboard() {
   }, [history]);
   // ================= TEXT =================
   const analyzeText = async () => {
-    const res = await axios.post("http://127.0.0.1:5000/fraud/text", { text });
+    const res = await axios.post(
+      "https://cyber-attack-detection-and-threat-fnth.onrender.com/fraud/text",
+      { text },
+    );
 
     setTextRisk(res.data.risk);
     setTextReasons(res.data.reasons || []);
@@ -152,7 +165,10 @@ function Dashboard() {
 
   // ================= URL =================
   const analyzeUrl = async () => {
-    const res = await axios.post("http://127.0.0.1:5000/fraud/url", { url });
+    const res = await axios.post(
+      "https://cyber-attack-detection-and-threat-fnth.onrender.com/fraud/url",
+      { url },
+    );
 
     setUrlRisk(res.data.risk);
     setUrlReasons(res.data.reasons || []);
@@ -165,7 +181,10 @@ function Dashboard() {
 
   // ================= PHONE =================
   const analyzePhone = async () => {
-    const res = await axios.post("http://127.0.0.1:5000/fraud/phone", { phone });
+    const res = await axios.post(
+      "https://cyber-attack-detection-and-threat-fnth.onrender.com/fraud/phone",
+      { phone },
+    );
 
     setPhoneRisk(res.data.risk);
     setPhoneReasons(res.data.reasons || []);
@@ -225,7 +244,10 @@ function Dashboard() {
       setVoiceText(transcript);
 
       try {
-        const res = await axios.post("http://127.0.0.1:5000/fraud/voice", { text: transcript });
+        const res = await axios.post(
+          "https://cyber-attack-detection-and-threat-fnth.onrender.com/fraud/voice",
+          { text: transcript },
+        );
 
         setVoiceRisk(res.data.risk);
         setVoiceReasons(res.data.reasons || []);
@@ -267,7 +289,10 @@ function Dashboard() {
     try {
       if (!value) return;
 
-      const res = await axios.post("http://127.0.0.1:5000/fraud/learn", { text: value, type });
+      const res = await axios.post(
+        "https://cyber-attack-detection-and-threat-fnth.onrender.com/fraud/learn",
+        { text: value, type },
+      );
 
       console.log(res.data);
       alert("Fraud saved");
