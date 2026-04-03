@@ -380,7 +380,7 @@ def analyze_phone():
 # ================= HISTORY =================
 @fraud_bp.route("/history", methods=["GET"])
 def get_history():
-    user_id = request.args.get("user_id")
+    user_id = int(request.args.get("user_id"))
 
     logs = FraudLog.query.filter_by(user_id=user_id).all()
 
