@@ -4,28 +4,30 @@ import API from "../services/api";
 import { Box, Card, CardContent, Typography, TextField, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-function Login() {
+function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
-    setLoading(true);
+  const handleSignup = async () => {
+    // 🔥 password match check
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
     try {
-      const res = await API.post("/auth/login", {
+      await API.post("/auth/signup", {
         email,
         password,
       });
 
-      localStorage.setItem("token", res.data.token);
-      navigate("/dashboard");
+      alert("Signup successful 🎉");
+      navigate("/"); // go to login
     } catch (err) {
-      console.log("ERROR:", err.response || err.message);
-      setError(err.response?.data?.error || "Invalid credentials");
-    } finally {
-      setLoading(false);
+      setError(err.response?.data?.error || "Signup failed");
     }
   };
 
@@ -50,9 +52,8 @@ function Login() {
         }}
       >
         <CardContent sx={{ p: 4 }}>
-          {/* TITLE */}
           <Typography variant="h5" sx={{ color: "#38bdf8", textAlign: "center", mb: 1 }}>
-            🔐 AI Fraud Intelligence
+            📝 Create Account
           </Typography>
 
           <Typography
@@ -63,56 +64,60 @@ function Login() {
               fontSize: 14,
             }}
           >
-            Protecting users with real-time AI fraud detection
+            Join AI Fraud Intelligence Platform
           </Typography>
 
-          {/* ERROR */}
           {error && (
             <Typography color="error" sx={{ mb: 2, textAlign: "center" }}>
               {error}
             </Typography>
           )}
 
-          {/* EMAIL */}
           <TextField
             fullWidth
             label="Email"
-            variant="outlined"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            sx={{
-              mb: 2,
-              input: { color: "white" },
-              label: { color: "#94a3b8" },
-            }}
+            sx={{ mb: 2 }}
           />
 
-          {/* PASSWORD */}
           <TextField
             fullWidth
             label="Password"
             type="password"
             value={password}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") handleLogin();
-            }}
             onChange={(e) => setPassword(e.target.value)}
-            sx={{
-              mb: 3,
-              input: { color: "white" },
-              label: { color: "#94a3b8" },
-            }}
+            sx={{ mb: 2 }}
           />
 
-          {/* LOGIN BUTTON */}
-          <Button fullWidth variant="contained" onClick={handleLogin} disabled={loading}>
-            {loading ? "Logging in..." : "Login Securely"}
+          <TextField
+            fullWidth
+            label="Confirm Password"
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            sx={{ mb: 3 }}
+          />
+
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={handleSignup}
+            sx={{
+              py: 1.2,
+              fontWeight: "bold",
+              background: "linear-gradient(90deg, #38bdf8, #6366f1)",
+            }}
+          >
+            Sign Up
           </Button>
+
+          {/* 🔥 Back to login */}
           <Typography
             sx={{ textAlign: "center", mt: 2, color: "#94a3b8", cursor: "pointer" }}
-            onClick={() => navigate("/signup")}
+            onClick={() => navigate("/")}
           >
-            Don't have an account? Sign Up
+            Already have an account? Login
           </Typography>
         </CardContent>
       </Card>
@@ -120,4 +125,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Signup;

@@ -95,6 +95,13 @@ function Dashboard() {
 
     return () => clearInterval(interval);
   }, []);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      window.location.href = "/";
+    }
+  }, []);
 
   const loadHistory = async () => {
     try {
@@ -343,6 +350,17 @@ function Dashboard() {
       <Typography variant="h4" sx={{ color: "#38bdf8", mb: 1 }}>
         🚨 AI Fraud Intelligence Platform
       </Typography>
+      <Button
+        variant="contained"
+        color="error"
+        sx={{ float: "right" }}
+        onClick={() => {
+          localStorage.removeItem("token");
+          window.location.href = "/";
+        }}
+      >
+        Logout
+      </Button>
 
       <Typography sx={{ color: "#22c55e", mb: 4 }}>
         System learned {learningStats} fraud patterns

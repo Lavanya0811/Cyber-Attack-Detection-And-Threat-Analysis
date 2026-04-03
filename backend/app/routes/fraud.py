@@ -496,3 +496,17 @@ def risk_distribution():
     except Exception as e:
         print("RISK DISTRIBUTION ERROR:", e)
         return jsonify({"error": str(e)}), 500
+@fraud_bp.route("/logs", methods=["GET"])
+def get_logs():
+    logs = FraudLog.query.order_by(FraudLog.id.desc()).limit(10).all()
+
+    result = []
+    for log in logs:
+        result.append({
+            "type": log.type,
+            "content": log.content,
+            "risk_score": log.risk_score,
+            "severity": log.severity
+        })
+
+    return jsonify(result)
