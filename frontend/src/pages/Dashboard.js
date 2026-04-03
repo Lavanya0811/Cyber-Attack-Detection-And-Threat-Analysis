@@ -160,54 +160,66 @@ function Dashboard() {
   }, [history]);
   // ================= TEXT =================
   const analyzeText = async () => {
-    const userId = localStorage.getItem("user_id");
-    const res = await axios.post(
-      "https://cyber-attack-detection-and-threat-fnth.onrender.com/fraud/text",
-      { text, user_id: userId },
-    );
+    try {
+      const userId = localStorage.getItem("user_id");
+      const res = await axios.post(
+        "https://cyber-attack-detection-and-threat-fnth.onrender.com/fraud/text",
+        { text, user_id: userId },
+      );
 
-    setTextRisk(res.data.risk);
-    setTextReasons(res.data.reasons || []);
-    setTextSeverity(res.data.severity || "");
-    setTextSuggestions(res.data.suggestions || []);
-    setTextConfidence(res.data.confidence ?? res.data.risk);
-    setTextExplain(res.data.explanation || {});
+      setTextRisk(res.data.risk);
+      setTextReasons(res.data.reasons || []);
+      setTextSeverity(res.data.severity || "");
+      setTextSuggestions(res.data.suggestions || []);
+      setTextConfidence(res.data.confidence ?? res.data.risk);
+      setTextExplain(res.data.explanation || {});
 
-    if (res.data.risk >= 60) setFraudAlert(res.data);
-    loadHistory();
+      if (res.data.risk >= 60) setFraudAlert(res.data);
+      loadHistory();
+    } catch (err) {
+      console.error("Text API error:", err);
+    }
   };
 
   // ================= URL =================
   const analyzeUrl = async () => {
-    const userId = localStorage.getItem("user_id");
-    const res = await axios.post(
-      "https://cyber-attack-detection-and-threat-fnth.onrender.com/fraud/url",
-      { url, user_id: userId },
-    );
+    try {
+      const userId = localStorage.getItem("user_id");
+      const res = await axios.post(
+        "https://cyber-attack-detection-and-threat-fnth.onrender.com/fraud/url",
+        { url, user_id: userId },
+      );
 
-    setUrlRisk(res.data.risk);
-    setUrlReasons(res.data.reasons || []);
-    setUrlSeverity(res.data.severity || "");
-    setUrlSuggestions(res.data.suggestions || []);
-    setUrlConfidence(res.data.confidence ?? res.data.risk);
+      setUrlRisk(res.data.risk);
+      setUrlReasons(res.data.reasons || []);
+      setUrlSeverity(res.data.severity || "");
+      setUrlSuggestions(res.data.suggestions || []);
+      setUrlConfidence(res.data.confidence ?? res.data.risk);
 
-    loadHistory();
+      loadHistory();
+    } catch (err) {
+      console.error("Text API error:", err);
+    }
   };
 
   // ================= PHONE =================
   const analyzePhone = async () => {
-    const userId = localStorage.getItem("user_id");
-    const res = await axios.post(
-      "https://cyber-attack-detection-and-threat-fnth.onrender.com/fraud/phone",
-      { phone, user_id: userId },
-    );
+    try {
+      const userId = localStorage.getItem("user_id");
+      const res = await axios.post(
+        "https://cyber-attack-detection-and-threat-fnth.onrender.com/fraud/phone",
+        { phone, user_id: userId },
+      );
 
-    setPhoneRisk(res.data.risk);
-    setPhoneReasons(res.data.reasons || []);
-    setPhoneSeverity(res.data.severity || "");
-    setPhoneConfidence(res.data.confidence ?? res.data.risk);
+      setPhoneRisk(res.data.risk);
+      setPhoneReasons(res.data.reasons || []);
+      setPhoneSeverity(res.data.severity || "");
+      setPhoneConfidence(res.data.confidence ?? res.data.risk);
 
-    loadHistory();
+      loadHistory();
+    } catch (err) {
+      console.error("Text API error:", err);
+    }
   };
   // ================= VOICE =================
   const startVoice = () => {
