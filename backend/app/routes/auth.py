@@ -1,4 +1,6 @@
 from flask import Blueprint, request, jsonify
+from app.services.user_service import create_user, get_user_by_email
+import bcrypt
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -14,12 +16,12 @@ def signup():
     email = data.get("email")
     password = data.get("password")
 
-    if email in users:
+    success = create_user(email, password)
+
+    if not success:
         return jsonify({"error": "User already exists"}), 400
 
-    users[email] = password
     return jsonify({"message": "Signup success"}), 201
-
 
 @auth_bp.route("/login", methods=["POST"])
 def login():
@@ -28,10 +30,17 @@ def login():
     email = data.get("email")
     password = data.get("password")
 
-    if email not in users or users[email] != password:
+    user = get_user_by_email(email)
+
+    if not user:
+        return jsonify({"error": "Invalid credentials"}), 401
+
+    stored_password = user[2]  # password column
+
+    if not bcrypt.checkpw(password.encode('utf-8'), stored_password):
         return jsonify({"error": "Invalid credentials"}), 401
 
     return jsonify({
         "message": "Login success",
-        "token": "dummy-jwt-token"
+        "token": "dummy-token"
     }), 200

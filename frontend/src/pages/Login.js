@@ -8,26 +8,24 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async () => {
+    setLoading(true);
     try {
-      const res = await API.post(
-        "https://cyber-attack-detection-and-threat-fnth.onrender.com/auth/login",
-        {
-          email,
-          password,
-        },
-      );
+      const res = await API.post("/auth/login", {
+        email,
+        password,
+      });
 
-      // store token
       localStorage.setItem("token", res.data.token);
-
-      // go to dashboard
       navigate("/dashboard");
     } catch (err) {
       console.log("ERROR:", err.response || err.message);
-      setError(err.response?.data?.error || "Something went wrong");
+      setError(err.response?.data?.error || "Invalid credentials");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -95,6 +93,9 @@ function Login() {
             label="Password"
             type="password"
             value={password}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleLogin();
+            }}
             onChange={(e) => setPassword(e.target.value)}
             sx={{
               mb: 3,
@@ -104,18 +105,8 @@ function Login() {
           />
 
           {/* LOGIN BUTTON */}
-          <Button
-            fullWidth
-            variant="contained"
-            onClick={handleLogin}
-            sx={{
-              py: 1.2,
-              fontWeight: "bold",
-              background: "linear-gradient(90deg, #38bdf8, #6366f1)",
-              boxShadow: "0 0 20px rgba(56,189,248,0.5)",
-            }}
-          >
-            Login Securely
+          <Button fullWidth variant="contained" onClick={handleLogin} disabled={loading}>
+            {loading ? "Logging in..." : "Login Securely"}
           </Button>
         </CardContent>
       </Card>
