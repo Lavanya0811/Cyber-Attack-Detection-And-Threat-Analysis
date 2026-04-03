@@ -2,6 +2,7 @@ from app.extensions import db
 
 class FraudLog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer)
     type = db.Column(db.String(20))
     content = db.Column(db.Text)
     risk_score = db.Column(db.Integer)

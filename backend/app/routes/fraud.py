@@ -227,8 +227,10 @@ def analyze_text():
 
     reasons, keys = generate_reasons(text, lang)
     suggestions = generate_suggestions(risk, keys, lang)
+    user_id = request.json.get("user_id")
 
     db.session.add(FraudLog(
+        user_id=user_id,
         type="text",
         content=text,
         risk_score=risk,
@@ -266,8 +268,10 @@ def analyze_voice():
 
     reasons, keys = generate_reasons(text, lang)
     suggestions = generate_suggestions(risk, keys, lang)
+    user_id = request.json.get("user_id")
 
     db.session.add(FraudLog(
+        user_id=user_id,
         type="voice",
         content=text,
         risk_score=risk,
@@ -315,9 +319,11 @@ def analyze_url():
     confidence = min(100, 40 + (reports * 6))
 
     reasons = translate_reasons(keys, "english")
+    user_id = request.json.get("user_id")
 
     # ✅ SAVE to history (VERY IMPORTANT)
     db.session.add(FraudLog(
+        user_id=user_id,
         type="url",
         content=url,
         risk_score=final_risk,
@@ -351,9 +357,11 @@ def analyze_phone():
 
     reports = rep.reports if rep else 0
     confidence = min(100, 40 + (reports * 6))
+    user_id = request.json.get("user_id")
 
     # ✅ ADD THIS BACK
     db.session.add(FraudLog(
+        user_id=user_id,
         type="phone",
         content=phone,
         risk_score=final_risk,
@@ -371,17 +379,20 @@ def analyze_phone():
 
 # ================= HISTORY =================
 @fraud_bp.route("/history", methods=["GET"])
-def fraud_history():
-    logs = FraudLog.query.order_by(FraudLog.id.desc()).limit(20).all()
+def get_history():
+    user_id = request.args.get("user_id")
 
-    return jsonify([
-        {
-            "type": l.type,
-            "content": l.content,
-            "risk_score": l.risk_score,
-            "severity": l.severity
-        } for l in logs
-    ])
+    logs = FraudLog.query.filter_by(user_id=user_id).all()
+
+    result = []
+    for log in logs:
+        result.append({
+            "type": log.type,
+            "content": log.content,
+            "risk_score": log.risk_score
+        })
+
+    return jsonify(result)
 
 
 # ================= ALERTS =================

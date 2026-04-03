@@ -22,6 +22,33 @@ def signup():
         return jsonify({"error": "User already exists"}), 400
 
     return jsonify({"message": "Signup success"}), 201
+@auth_bp.route("/reset-password", methods=["POST"])
+def reset_password():
+    data = request.get_json()
+
+    email = data.get("email")
+    password = data.get("password")
+
+    user = get_user_by_email(email)
+
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    import bcrypt
+    hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+
+    cursor.execute(
+        "UPDATE users SET password=? WHERE email=?",
+        (hashed, email)
+    )
+
+    conn.commit()
+    conn.close()
+
+    return jsonify({"message": "Password updated"})
 
 @auth_bp.route("/login", methods=["POST"])
 def login():
@@ -42,5 +69,6 @@ def login():
 
     return jsonify({
         "message": "Login success",
-        "token": "dummy-token"
+        "token": "dummy-token",
+        "user_id": user[0]
     }), 200
