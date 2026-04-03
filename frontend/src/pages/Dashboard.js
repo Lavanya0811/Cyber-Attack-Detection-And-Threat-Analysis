@@ -105,9 +105,15 @@ function Dashboard() {
 
   const loadHistory = async () => {
     try {
+      const userId = localStorage.getItem("user_id"); // 🔥 ADD THIS
+
       const res = await axios.get(
         "https://cyber-attack-detection-and-threat-fnth.onrender.com/fraud/history",
+        {
+          params: { user_id: userId }, // 🔥 ADD THIS
+        },
       );
+
       setHistory(res.data);
     } catch {
       console.log("History error");
@@ -154,9 +160,10 @@ function Dashboard() {
   }, [history]);
   // ================= TEXT =================
   const analyzeText = async () => {
+    const userId = localStorage.getItem("user_id");
     const res = await axios.post(
       "https://cyber-attack-detection-and-threat-fnth.onrender.com/fraud/text",
-      { text },
+      { text, user_id: userId },
     );
 
     setTextRisk(res.data.risk);
@@ -172,9 +179,10 @@ function Dashboard() {
 
   // ================= URL =================
   const analyzeUrl = async () => {
+    const userId = localStorage.getItem("user_id");
     const res = await axios.post(
       "https://cyber-attack-detection-and-threat-fnth.onrender.com/fraud/url",
-      { url },
+      { url, user_id: userId },
     );
 
     setUrlRisk(res.data.risk);
@@ -188,9 +196,10 @@ function Dashboard() {
 
   // ================= PHONE =================
   const analyzePhone = async () => {
+    const userId = localStorage.getItem("user_id");
     const res = await axios.post(
       "https://cyber-attack-detection-and-threat-fnth.onrender.com/fraud/phone",
-      { phone },
+      { phone, user_id: userId },
     );
 
     setPhoneRisk(res.data.risk);
@@ -202,6 +211,7 @@ function Dashboard() {
   };
   // ================= VOICE =================
   const startVoice = () => {
+    const userId = localStorage.getItem("user_id");
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
@@ -253,7 +263,7 @@ function Dashboard() {
       try {
         const res = await axios.post(
           "https://cyber-attack-detection-and-threat-fnth.onrender.com/fraud/voice",
-          { text: transcript },
+          { text: transcript, user_id: userId },
         );
 
         setVoiceRisk(res.data.risk);
